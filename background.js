@@ -177,10 +177,7 @@ async function callGemini(prompt, apiKey, model) {
 async function fetchGeminiModels(apiKey) {
     try {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: 'GET'
         });
         
         if (!response.ok) {
@@ -192,7 +189,7 @@ async function fetchGeminiModels(apiKey) {
         
         // Filter models that support generateContent
         if (!data.models || !Array.isArray(data.models)) {
-            console.error('Invalid response format from Gemini API');
+            console.error('Invalid response format from Gemini API:', data);
             return null;
         }
         
