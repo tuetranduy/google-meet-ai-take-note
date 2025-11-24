@@ -11,10 +11,14 @@ const AI_MODELS = {
         { value: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku' }
     ],
     gemini: [
-        { value: 'gemini-pro', label: 'Gemini Pro' },
-        { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' }
+        { value: 'gemini-2.0-flash-exp', label: 'Gemini 2.0 Flash (Experimental)' },
+        { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro' },
+        { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash' }
     ]
 };
+
+// Store fetched Gemini models
+let fetchedGeminiModels = null;
 
 // Load saved settings when popup opens
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,9 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     if (settings.aiProvider) {
         document.getElementById('ai-provider').value = settings.aiProvider;
-        updateModelOptions(settings.aiProvider);
+        await updateModelOptions(settings.aiProvider);
     } else {
-        updateModelOptions('openai');
+        await updateModelOptions('openai');
     }
     
     if (settings.apiKey) {
@@ -37,15 +41,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Update model dropdown based on selected provider
-document.getElementById('ai-provider').addEventListener('change', (e) => {
-    updateModelOptions(e.target.value);
+document.getElementById('ai-provider').addEventListener('change', async (e) => {
+    await updateModelOptions(e.target.value);
 });
 
-function updateModelOptions(provider) {
+async function updateModelOptions(provider) {
     const modelSelect = document.getElementById('model');
-    modelSelect.innerHTML = '';
+    modelSelect.innerHTML = '<option value="">Loading models...</option>';
     
-    const models = AI_MODELS[provider] || AI_MODELS.openai;
+    let models = AI_MODELS[provider] || AI_MODELS.openai;
+    
+    // If Gemini is selected and we have an API key, try to fetch models from API
+    if (provider === 'gemini') {
+        const settings = await chrome.storage.sync.get(['apiKey']);
+        if (settings.apiKey) {
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    action: 'fetchGeminiModels',
+                    apiKey: settings.apiKey
+                });
+                
+                if (response && response.models && response.models.length > 0) {
+                    fetchedGeminiModels = response.models;
+                    models = response.models;
+                    console.log('Fetched Gemini models from API:', models);
+                }
+            } catch (error) {
+                console.error('Failed to fetch Gemini models, using defaults:', error);
+            }
+        }
+    }
+    
+    modelSelect.innerHTML = '';
     models.forEach(model => {
         const option = document.createElement('option');
         option.value = model.value;
@@ -85,6 +112,11 @@ document.getElementById('save-settings').addEventListener('click', async () => {
             apiKey: apiKey,
             model: model
         });
+        
+        // If Gemini provider and we have an API key, refresh models
+        if (provider === 'gemini') {
+            await updateModelOptions(provider);
+        }
         
         showStatus('Settings saved successfully!', 'success');
     } catch (error) {
