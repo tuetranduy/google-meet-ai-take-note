@@ -186,6 +186,11 @@ async function fetchGeminiModels(apiKey) {
         const data = await response.json();
         
         // Filter models that support generateContent
+        if (!data.models || !Array.isArray(data.models)) {
+            console.error('Invalid response format from Gemini API');
+            return null;
+        }
+        
         const supportedModels = data.models
             .filter(model => 
                 model.supportedGenerationMethods && 
