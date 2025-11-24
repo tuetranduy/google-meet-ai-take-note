@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Notes</title>
+    <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 Meeting Notes</h1>
+            <div class="header-actions">
+                <button id="copy-notes" class="btn-action">📋 Copy to Clipboard</button>
+                <button id="download-notes" class="btn-action">💾 Download as Text</button>
+                <button id="refresh-notes" class="btn-action">🔄 Refresh</button>
+            </div>
+        </header>
+        
+        <div class="meeting-info">
+            <div class="info-item">
+                <strong>Meeting:</strong>
+                <span id="meeting-title">Loading...</span>
+            </div>
+            <div class="info-item">
+                <strong>Date:</strong>
+                <span id="meeting-date">Loading...</span>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="summary">AI Summary</button>
+            <button class="tab" data-tab="transcript">Full Transcript</button>
+        </div>
+        
+        <div class="content">
+            <div id="summary-tab" class="tab-content active">
+                <div id="summary-content" class="notes-content">
+                    <div class="loading">Generating AI summary...</div>
+                </div>
+            </div>
+            
+            <div id="transcript-tab" class="tab-content">
+                <div id="transcript-content" class="notes-content">
+                    <div class="loading">Loading transcript...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="notes.js"></script>
+</body>
+</html>
