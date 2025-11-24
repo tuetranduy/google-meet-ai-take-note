@@ -144,8 +144,8 @@ document.getElementById('download-notes').addEventListener('click', async () => 
 });
 
 // Refresh notes
-document.getElementById('refresh-notes').addEventListener('click', () => {
-    loadNotes();
+document.getElementById('refresh-notes').addEventListener('click', async () => {
+    await loadNotes();
     showNotification('Notes refreshed!');
 });
 
