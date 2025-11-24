@@ -9,7 +9,7 @@ An intelligent Chrome extension that automatically captures, transcribes, and su
 - **Multiple AI Providers**: Choose from:
   - OpenAI (GPT-4, GPT-4 Turbo, GPT-3.5)
   - Anthropic (Claude 3 Opus, Sonnet, Haiku)
-  - Google Gemini (Gemini Pro, Gemini 1.5 Pro)
+  - Google Gemini (automatically fetches all available models from API)
 - **Full Transcript**: Save and review the complete meeting transcript
 - **Easy Export**: Copy to clipboard or download notes as text files
 - **Secure API Key Storage**: Your API keys are stored securely in Chrome's sync storage
@@ -121,6 +121,7 @@ An intelligent Chrome extension that automatically captures, transcribes, and su
 - Check your API provider's dashboard for any account issues
 - Make sure you have available credits/quota with your AI provider
 - Wait a few moments - summaries take 10-30 seconds to generate
+- **For Gemini users**: If you see an error about `gemini-pro` not found, make sure you save your API key in the settings to automatically fetch the latest available models
 
 ### Extension not appearing
 - Make sure you loaded the correct folder in `chrome://extensions/`
@@ -133,7 +134,7 @@ An intelligent Chrome extension that automatically captures, transcribes, and su
   - GPT-4: Best quality, more expensive
   - GPT-3.5 Turbo: Fast and cost-effective
   - Claude 3 Opus: Excellent for detailed analysis
-  - Gemini Pro: Good balance of speed and quality
+  - Gemini models: The extension automatically fetches available models from Google's API based on your API key
 
 - **Save API costs**: The extension automatically saves transcripts every 30 seconds and generates summaries periodically, not on every caption
 
