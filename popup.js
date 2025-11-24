@@ -17,9 +17,6 @@ const AI_MODELS = {
     ]
 };
 
-// Store fetched Gemini models
-let fetchedGeminiModels = null;
-
 // Load saved settings when popup opens
 document.addEventListener('DOMContentLoaded', async () => {
     const settings = await chrome.storage.sync.get(['aiProvider', 'apiKey', 'model']);
@@ -62,9 +59,7 @@ async function updateModelOptions(provider) {
                 });
                 
                 if (response && response.models && response.models.length > 0) {
-                    fetchedGeminiModels = response.models;
                     models = response.models;
-                    console.log('Fetched Gemini models from API:', models);
                 }
             } catch (error) {
                 console.error('Failed to fetch Gemini models, using defaults:', error);

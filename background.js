@@ -5,9 +5,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'generateSummary') {
         handleGenerateSummary(message.transcript, sender.tab.id);
     } else if (message.action === 'fetchGeminiModels') {
-        fetchGeminiModels(message.apiKey).then(models => {
-            sendResponse({ models: models });
-        });
+        fetchGeminiModels(message.apiKey)
+            .then(models => {
+                sendResponse({ models: models });
+            })
+            .catch(error => {
+                console.error('Error in fetchGeminiModels:', error);
+                sendResponse({ models: null, error: error.message });
+            });
         return true; // Keep the message channel open for async response
     }
 });
@@ -196,10 +201,13 @@ async function fetchGeminiModels(apiKey) {
                 model.supportedGenerationMethods && 
                 model.supportedGenerationMethods.includes('generateContent')
             )
-            .map(model => ({
-                value: model.name.replace('models/', ''),
-                label: model.displayName || model.name.replace('models/', '')
-            }));
+            .map(model => {
+                const modelName = model.name.replace('models/', '');
+                return {
+                    value: modelName,
+                    label: model.displayName || modelName
+                };
+            });
         
         return supportedModels;
     } catch (error) {
