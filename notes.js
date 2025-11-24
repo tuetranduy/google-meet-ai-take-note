@@ -88,10 +88,12 @@ document.getElementById('copy-notes').addEventListener('click', async () => {
         
         const data = await chrome.storage.local.get(['meetingNotes', 'meetingTranscript', 'meetingTitle', 'meetingDate']);
         
+        const dateStr = data.meetingDate ? new Date(data.meetingDate).toLocaleString() : 'Unknown date';
+        
         if (activeTab === 'summary' && data.meetingNotes) {
-            textToCopy = `Meeting: ${data.meetingTitle || 'Untitled'}\nDate: ${new Date(data.meetingDate).toLocaleString()}\n\n${data.meetingNotes}`;
+            textToCopy = `Meeting: ${data.meetingTitle || 'Untitled'}\nDate: ${dateStr}\n\n${data.meetingNotes}`;
         } else if (activeTab === 'transcript' && data.meetingTranscript) {
-            textToCopy = `Meeting: ${data.meetingTitle || 'Untitled'}\nDate: ${new Date(data.meetingDate).toLocaleString()}\n\nTranscript:\n${data.meetingTranscript}`;
+            textToCopy = `Meeting: ${data.meetingTitle || 'Untitled'}\nDate: ${dateStr}\n\nTranscript:\n${data.meetingTranscript}`;
         }
         
         if (textToCopy) {

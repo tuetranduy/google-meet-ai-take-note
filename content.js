@@ -1,5 +1,9 @@
 // Content script to capture Google Meet captions and transcripts
 
+// Constants
+const MEETING_END_TIMEOUT_MS = 120000; // 2 minutes without captions = meeting ended
+const TRANSCRIPT_SAVE_INTERVAL_MS = 30000; // Save transcript every 30 seconds
+
 let captionObserver = null;
 let transcriptText = [];
 let lastCaptionTime = Date.now();
@@ -106,7 +110,7 @@ function startCaptionCapture() {
     });
     
     // Also set up periodic save
-    setInterval(saveTranscript, 30000); // Save every 30 seconds
+    setInterval(saveTranscript, TRANSCRIPT_SAVE_INTERVAL_MS);
 }
 
 function handleNewCaption(caption) {
@@ -169,8 +173,8 @@ function detectMeetingEnd() {
     const checkInterval = setInterval(() => {
         const timeSinceLastCaption = Date.now() - lastCaptionTime;
         
-        // If no captions for 2 minutes, consider meeting ended
-        if (timeSinceLastCaption > 120000 && transcriptText.length > 0) {
+        // If no captions for the timeout period, consider meeting ended
+        if (timeSinceLastCaption > MEETING_END_TIMEOUT_MS && transcriptText.length > 0) {
             console.log('Meeting appears to have ended');
             saveTranscript();
             requestAISummary();

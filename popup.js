@@ -132,6 +132,6 @@ function showStatus(message, type) {
     statusDiv.className = `status-message ${type}`;
     
     setTimeout(() => {
-        statusDiv.style.display = 'none';
+        statusDiv.className = 'status-message';
     }, 5000);
 }
