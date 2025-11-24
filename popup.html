@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Meet AI Note Taker</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Google Meet AI Note Taker</h1>
+        
+        <div class="section">
+            <h2>AI Provider Settings</h2>
+            
+            <div class="form-group">
+                <label for="ai-provider">Select AI Provider:</label>
+                <select id="ai-provider">
+                    <option value="openai">OpenAI (GPT-4, GPT-3.5)</option>
+                    <option value="anthropic">Anthropic (Claude)</option>
+                    <option value="gemini">Google Gemini</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="api-key">API Key:</label>
+                <input type="password" id="api-key" placeholder="Enter your API key">
+                <button id="toggle-key" class="btn-small">Show</button>
+            </div>
+            
+            <div id="model-selection" class="form-group">
+                <label for="model">Model:</label>
+                <select id="model">
+                    <!-- Options will be populated based on provider -->
+                </select>
+            </div>
+            
+            <button id="save-settings" class="btn-primary">Save Settings</button>
+            <div id="status-message" class="status-message"></div>
+        </div>
+        
+        <div class="section">
+            <h2>Meeting Notes</h2>
+            <div class="info-box">
+                <p>📝 This extension captures captions from Google Meet and uses AI to:</p>
+                <ul>
+                    <li>Summarize the meeting</li>
+                    <li>Extract key points and action items</li>
+                    <li>Generate organized meeting notes</li>
+                </ul>
+            </div>
+            
+            <div class="button-group">
+                <button id="view-notes" class="btn-secondary">View Current Meeting Notes</button>
+                <button id="clear-notes" class="btn-secondary">Clear All Notes</button>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Instructions</h2>
+            <ol class="instructions">
+                <li>Select your preferred AI provider</li>
+                <li>Enter your API key (get it from the provider's website)</li>
+                <li>Join a Google Meet meeting</li>
+                <li>Enable captions in the meeting</li>
+                <li>The extension will automatically capture and process the meeting</li>
+                <li>Click "View Current Meeting Notes" to see the AI-generated summary</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
